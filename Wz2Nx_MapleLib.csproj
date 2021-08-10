@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{0EE1F439-07CA-4309-96BA-906A2100F8C7}</ProjectGuid>
+        <OutputType>Exe</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Wz2Nx_MapleLib</RootNamespace>
+        <AssemblyName>Wz2Nx_MapleLib</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Microsoft.Win32.Registry, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>packages\Microsoft.Win32.Registry.4.7.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="MonoGame.Framework, Version=3.8.0.1641, Culture=neutral, PublicKeyToken=null">
+          <HintPath>packages\MonoGame.Framework.WindowsDX.3.8.0.1641\lib\net452\MonoGame.Framework.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="mscorlib" />
+        <Reference Include="NAudio, Version=2.0.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41">
+          <HintPath>packages\NAudio.2.0.1\lib\netstandard2.0\NAudio.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="NAudio.Asio, Version=2.0.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41">
+          <HintPath>packages\NAudio.Asio.2.0.0\lib\netstandard2.0\NAudio.Asio.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="NAudio.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41">
+          <HintPath>packages\NAudio.Core.2.0.0\lib\netstandard2.0\NAudio.Core.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="NAudio.Midi, Version=2.0.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41">
+          <HintPath>packages\NAudio.Midi.2.0.1\lib\netstandard2.0\NAudio.Midi.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="NAudio.Wasapi, Version=2.0.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41">
+          <HintPath>packages\NAudio.Wasapi.2.0.0\lib\netstandard2.0\NAudio.Wasapi.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="NAudio.WinForms, Version=2.0.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41">
+          <HintPath>packages\NAudio.WinForms.2.0.1\lib\net472\NAudio.WinForms.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="NAudio.WinMM, Version=2.0.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41">
+          <HintPath>packages\NAudio.WinMM.2.0.1\lib\netstandard2.0\NAudio.WinMM.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
+          <HintPath>packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="SharpDX.Direct2D1, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
+          <HintPath>packages\SharpDX.Direct2D1.4.0.1\lib\net45\SharpDX.Direct2D1.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="SharpDX.Direct3D11, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
+          <HintPath>packages\SharpDX.Direct3D11.4.0.1\lib\net45\SharpDX.Direct3D11.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="SharpDX.Direct3D9, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
+          <HintPath>packages\SharpDX.Direct3D9.4.0.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="SharpDX.DXGI, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
+          <HintPath>packages\SharpDX.DXGI.4.0.1\lib\net45\SharpDX.DXGI.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="SharpDX.Mathematics, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
+          <HintPath>packages\SharpDX.Mathematics.4.0.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="SharpDX.MediaFoundation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
+          <HintPath>packages\SharpDX.MediaFoundation.4.0.1\lib\net45\SharpDX.MediaFoundation.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="SharpDX.XAudio2, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
+          <HintPath>packages\SharpDX.XAudio2.4.0.1\lib\net45\SharpDX.XAudio2.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="SharpDX.XInput, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
+          <HintPath>packages\SharpDX.XInput.4.0.1\lib\net45\SharpDX.XInput.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Drawing.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>packages\System.Drawing.Common.6.0.0-preview.6.21352.12\lib\net461\System.Drawing.Common.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Security.AccessControl, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>packages\System.Security.AccessControl.4.7.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Security.Principal.Windows, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>packages\System.Security.Principal.Windows.4.7.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Helpers\ErrorLogger.cs" />
+        <Compile Include="MapleLib\Helpers\ErrorLogger.cs" />
+        <Compile Include="MapleLib\MapleCryptoLib\CryptoConstants.cs" />
+        <Compile Include="MapleLib\MapleCryptoLib\MapleCryptoConstants.cs" />
+        <Compile Include="MapleLib\WzFileParseStatus.cs" />
+        <Compile Include="MapleLib\WzHeader.cs" />
+        <Compile Include="MapleLib\WzLib\IPropertyContainer.cs" />
+        <Compile Include="MapleLib\WzLib\Util\GameUtil.cs" />
+        <Compile Include="MapleLib\WzLib\Util\WzBinaryReader.cs" />
+        <Compile Include="MapleLib\WzLib\Util\WzBinaryWriter.cs" />
+        <Compile Include="MapleLib\WzLib\Util\WzKeyGenerator.cs" />
+        <Compile Include="MapleLib\WzLib\Util\WzMutableKey.cs" />
+        <Compile Include="MapleLib\WzLib\Util\WzTool.cs" />
+        <Compile Include="MapleLib\WzLib\WzDirectory.cs" />
+        <Compile Include="MapleLib\WzLib\WzExtended.cs" />
+        <Compile Include="MapleLib\WzLib\WzFile.cs" />
+        <Compile Include="MapleLib\WzLib\WzImage.cs" />
+        <Compile Include="MapleLib\WzLib\WzImageProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzMapleVersion.cs" />
+        <Compile Include="MapleLib\WzLib\WzObject.cs" />
+        <Compile Include="MapleLib\WzLib\WzObjectType.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzBinaryProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzCanvasProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzConvexProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzDoubleProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzFloatProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzIntProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzLongProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzNullProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzPngProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzShortProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzSoundProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzStringProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzSubProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzUolProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzVectorProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzPropertyType.cs" />
+        <Compile Include="Options.cs" />
+        <Compile Include="Program.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="SquishPNGWrapper.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include=".gitignore" />
+        <Content Include="lz4hc_32.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="lz4hc_64.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <Import Project="packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets" Condition="Exists('packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets')" />
+    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+      <PropertyGroup>
+        <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+      </PropertyGroup>
+      <Error Condition="!Exists('packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets'))" />
+    </Target>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>
