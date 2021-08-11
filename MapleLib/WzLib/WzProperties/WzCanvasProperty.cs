@@ -17,18 +17,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapleLib.WzLib.WzProperties;
 
-namespace Mh.MapleLib.WzLib.WzProperties
+namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 {
     /// <summary>
     /// A property that can contain sub properties and has one png image
     /// </summary>
-    public class WzCanvasProperty : WzExtended, IPropertyContainer
+    public sealed class WzCanvasProperty : WzExtended, IPropertyContainer
     {
         #region Fields
 
-        private List<WzImageProperty> _properties = new List<WzImageProperty>();
+        private List<WzImageProperty> _properties = new();
 
         #endregion
 
@@ -43,8 +42,6 @@ namespace Mh.MapleLib.WzLib.WzProperties
         }
 
         #region Inherited Members
-
-        public override object WzValue => PngProperty;
 
         /// <summary>
         /// The parent of the object
@@ -64,7 +61,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets a wz property by it's name

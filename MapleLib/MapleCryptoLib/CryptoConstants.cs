@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-using Mh.MapleLib.WzLib;
-using Mh.MapleLib.WzLib.Util;
+   using Wz2Nx_MapleLib.MapleLib.WzLib;
+using Wz2Nx_MapleLib.MapleLib.WzLib.Util;
 
-namespace Mh.MapleLib.MapleCryptoLib
+   namespace Mh.MapleLib.MapleCryptoLib
 {
     /// <summary>
     /// Contains all the constant values used for various functions

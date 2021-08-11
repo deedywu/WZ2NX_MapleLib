@@ -1,4 +1,4 @@
-﻿﻿﻿﻿/*  MapleLib - A general-purpose MapleStory library
+﻿/*  MapleLib - A general-purpose MapleStory library
  * Copyright (C) 2009, 2010, 2015 Snow and haha01haha01
    
  * This program is free software: you can redistribute it and/or modify
@@ -14,23 +14,19 @@
  * You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-   using System.Collections.Generic;
-
-   namespace Mh.MapleLib.WzLib.WzProperties
+namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 {
     /// <summary>
     /// A property that is stored in the wz file with a byte and possibly followed by a float. If the 
     /// byte is 0, the value is 0, else the value is the float that follows.
     /// </summary>
-    public class WzFloatProperty : WzImageProperty
+    public sealed class WzFloatProperty : WzImageProperty
     {
         #region Fields
 
         #endregion
 
         #region Inherited Members
-
-        public override object WzValue => Value;
 
         /// <summary>
         /// The parent of the object
@@ -45,7 +41,7 @@
         /// <summary>
         /// The name of the property
         /// </summary>
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Dispose the object
@@ -63,7 +59,7 @@
         /// The value of the property
         /// </summary>
         public float Value { get; }
-        
+
 
         /// <summary>
         /// Creates a WzByteFloatProperty with the specified name and value
@@ -84,11 +80,11 @@
 
         public override double GetDouble() => Value;
 
-        public override int GetInt() => (int) Value;
+        public override int GetInt() => (int)Value;
 
-        public override short GetShort() => (short) Value;
+        public override short GetShort() => (short)Value;
 
-        public override long GetLong() => (long) Value;
+        public override long GetLong() => (long)Value;
 
         public override string ToString() => $"{Value}";
 

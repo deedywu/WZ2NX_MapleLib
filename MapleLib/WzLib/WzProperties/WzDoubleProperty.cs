@@ -1,4 +1,4 @@
-﻿﻿﻿﻿/*  MapleLib - A general-purpose MapleStory library
+﻿/*  MapleLib - A general-purpose MapleStory library
  * Copyright (C) 2009, 2010, 2015 Snow and haha01haha01
    
  * This program is free software: you can redistribute it and/or modify
@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-   using System.Collections.Generic;
+using System.Collections.Generic;
 
-   namespace Mh.MapleLib.WzLib.WzProperties
+namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 {
     /// <summary>
     /// A property that has the value of a double
     /// </summary>
-    public class WzDoubleProperty : WzImageProperty
+    public sealed class WzDoubleProperty : WzImageProperty
     {
         #region Fields
 
@@ -29,14 +29,12 @@
 
         #region Inherited Members
 
-        public override object WzValue => Value;
-
         /// <summary>
         /// The parent of the object
         /// </summary>
         public override WzObject Parent { get; internal set; }
 
-        
+
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>
@@ -45,7 +43,7 @@
         /// <summary>
         /// The name of this property
         /// </summary>
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
         public override void Dispose()
         {
@@ -76,24 +74,25 @@
 
         #region Cast Values
 
-        public override float GetFloat() => (float) Value;
+        public override float GetFloat() => (float)Value;
 
         public override double GetDouble() => Value;
+
         public override int ChildCount()
         {
             return 0;
-        } 
+        }
 
         public override List<WzObject> ChildArray()
         {
             return null;
         }
 
-        public override int GetInt() => (int) Value;
+        public override int GetInt() => (int)Value;
 
-        public override short GetShort() => (short) Value;
+        public override short GetShort() => (short)Value;
 
-        public override long GetLong() => (long) Value;
+        public override long GetLong() => (long)Value;
 
         public override string ToString() => $"{Value}";
 

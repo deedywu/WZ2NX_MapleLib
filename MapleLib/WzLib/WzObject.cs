@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace Mh.MapleLib.WzLib
+namespace Wz2Nx_MapleLib.MapleLib.WzLib
 {
     /// <summary>
     /// An abstract class for wz objects
@@ -54,7 +54,7 @@ namespace Mh.MapleLib.WzLib
             }
         }
 
-        public string FullPath
+        protected string FullPath
         {
             get
             {
@@ -74,23 +74,6 @@ namespace Mh.MapleLib.WzLib
                 return result;
             }
         }
-
-        /// <summary>
-        /// Used in HaCreator to save already parsed images
-        /// </summary>
-        public object HcTag { get; set; }
-
-        /// <summary>
-        /// Used in HaCreator's MapSimulator to save already parsed textures
-        /// </summary>
-        public object MsTag { get; set; }
-
-        /// <summary>
-        /// Used in HaRepacker to save WzNodes
-        /// </summary>
-        public object HrTag { get; set; }
-
-        public virtual object WzValue => null;
 
         //Credits to BluePoop for the idea of using cast overriding
         //2015 - That is the worst idea ever, removed and replaced with Get* methods

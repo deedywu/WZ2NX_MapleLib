@@ -15,13 +15,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using Mh.MapleLib.Helpers;
 using Mh.MapleLib.MapleCryptoLib;
-using Mh.MapleLib.WzLib.Util;
+using Wz2Nx_MapleLib.MapleLib.WzLib.Util;
 
-namespace Mh.MapleLib.WzLib
+namespace Wz2Nx_MapleLib.MapleLib.WzLib
 {
     /// <summary>
     /// A class that contains all the information of a wz file
@@ -40,7 +38,7 @@ namespace Mh.MapleLib.WzLib
         /// The parsed IWzDir after having called ParseWzDirectory(), this can either be a WzDirectory or a WzListDirectory
         /// </summary>
         public WzDirectory WzDirectory { get; private set; }
-        
+
         /// <summary>
         /// Name of the WzFile
         /// </summary>
@@ -109,7 +107,7 @@ namespace Mh.MapleLib.WzLib
         {
             if (FilePath == null)
             {
-                ErrorLogger.Log(ErrorLevel.Critical, "[Error] Path is null");
+                Console.WriteLine("[Error] Path is null");
                 return;
             }
 

@@ -7,16 +7,16 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using MapleLib.WzLib.WzProperties;
-using Mh.MapleLib.WzLib;
-using Mh.MapleLib.WzLib.WzProperties;
+using Wz2Nx_MapleLib.MapleLib.WzLib;
+using Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties;
 
-namespace Wz2NxByMapleLib
+namespace Wz2Nx_MapleLib
 {
+    // override from WZ2NX (angles)
     internal static class Program
     {
-        private static readonly byte[] PKG4 = { 0x50, 0x4B, 0x47, 0x34 }; // PKG4
-        private static readonly bool _is64bit = IntPtr.Size == 8;
+        private static readonly byte[] Pkg4 = { 0x50, 0x4B, 0x47, 0x34 }; // PKG4
+        private static readonly bool Is64Bit = IntPtr.Size == 8;
 
         private static void EnsureMultiple(this Stream s, int multiple)
         {
@@ -26,12 +26,21 @@ namespace Wz2NxByMapleLib
             s.Write(new byte[skip], 0, skip);
         }
 
+        // todo write your to convert wz files name
+        private static readonly string[] Names =
+        {
+            "Sound", "String", "Etc"
+        };
+
         public static void Main(string[] args)
         {
             // todo write input wz path and output nx path,game version,Maple version here
-            Run("D:/workspace/study/ms/wz/079/Etc.wz",
-                "D:/workspace/study/ms/wz/079/nx/Etc.nx",
-                WzMapleVersion.Ems, 79);
+            foreach (var name in Names)
+            {
+                Run($"D:/workspace/study/ms/wz/079/{name}.wz",
+                    $"D:/workspace/study/ms/wz/079/nx/{name}.nx",
+                    WzMapleVersion.Ems, 79);
+            }
         }
 
         private static void Run(string inWz, string outPath, WzMapleVersion wzVar, short gameVersion)
@@ -60,7 +69,7 @@ namespace Wz2NxByMapleLib
             var state = new DumpState();
 
             ReportDone("Writing header... ".PadRight(31));
-            bw.Write(PKG4);
+            bw.Write(Pkg4);
             bw.Write(new byte[(4 + 8) * 4]);
 
             ReportDone("Writing nodes... ".PadRight(31));
@@ -283,16 +292,23 @@ namespace Wz2NxByMapleLib
         private static void WriteBitmap(WzCanvasProperty node, BinaryWriter bw)
         {
             var b = node.PngProperty.GetBitmap();
-            var compressed = GetCompressedBitmap(b);
-            // node.Dispose();
-            // b = null;
-            bw.Write((uint)compressed.Length);
-            bw.Write(compressed);
+            if (b == null)
+            {
+                bw.Write((uint)0);
+            }
+            else
+            {
+                var compressed = GetCompressedBitmap(b);
+                node.PngProperty.Dispose();
+                // b = null;
+                bw.Write((uint)compressed.Length);
+                bw.Write(compressed);
+            }
         }
 
         private static void WriteMP3(WzBinaryProperty node, BinaryWriter bw)
         {
-            var m = node.mp3bytes;
+            var m = node.GetBytes();
             bw.Write(m);
             // node.Dispose();
             // m = null;
@@ -303,9 +319,9 @@ namespace Wz2NxByMapleLib
             BitmapData bd = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadOnly,
                 PixelFormat.Format32bppArgb);
             int inLen = bd.Stride * bd.Height;
-            int outLen = _is64bit ? EMaxOutputLen64(inLen) : EMaxOutputLen32(inLen);
+            int outLen = Is64Bit ? EMaxOutputLen64(inLen) : EMaxOutputLen32(inLen);
             byte[] outBuf = new byte[outLen];
-            outLen = _is64bit
+            outLen = Is64Bit
                 ? ECompressLZ464(bd.Scan0, outBuf, inLen, outLen, 0)
                 : ECompressLZ432(bd.Scan0, outBuf, inLen, outLen, 0);
             b.UnlockBits(bd);

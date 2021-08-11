@@ -1,4 +1,4 @@
-﻿﻿﻿﻿/*  MapleLib - A general-purpose MapleStory library
+﻿/*  MapleLib - A general-purpose MapleStory library
  * Copyright (C) 2009, 2010, 2015 Snow and haha01haha01
    
  * This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@ using System.IO;
 using System.Text;
 using Mh.MapleLib.MapleCryptoLib;
 
-namespace Mh.MapleLib.WzLib.Util
+namespace Wz2Nx_MapleLib.MapleLib.WzLib.Util
 {
     public class WzBinaryReader : BinaryReader
     {
@@ -81,8 +81,8 @@ namespace Mh.MapleLib.WzLib.Util
                 {
                     var encryptedChar = ReadUInt16();
                     encryptedChar ^= mask;
-                    encryptedChar ^= (ushort) ((WzKey[i * 2 + 1] << 8) + WzKey[i * 2]);
-                    retString.Append((char) encryptedChar);
+                    encryptedChar ^= (ushort)((WzKey[i * 2 + 1] << 8) + WzKey[i * 2]);
+                    retString.Append((char)encryptedChar);
                     mask++;
                 }
             }
@@ -109,7 +109,7 @@ namespace Mh.MapleLib.WzLib.Util
                     var encryptedChar = ReadByte();
                     encryptedChar ^= mask;
                     encryptedChar ^= WzKey[i];
-                    retString.Append((char) encryptedChar);
+                    retString.Append((char)encryptedChar);
                     mask++;
                 }
             }
@@ -132,7 +132,7 @@ namespace Mh.MapleLib.WzLib.Util
             var b = ReadByte();
             while (b != 0)
             {
-                retString.Append((char) b);
+                retString.Append((char)b);
                 b = ReadByte();
             }
 
@@ -153,11 +153,11 @@ namespace Mh.MapleLib.WzLib.Util
 
         public uint ReadOffset()
         {
-            var offset = (uint) BaseStream.Position;
+            var offset = (uint)BaseStream.Position;
             offset = (offset - FStart) ^ uint.MaxValue;
             offset *= Hash;
             offset -= CryptoConstants.WzOffsetConstant;
-            offset = CryptoConstants.RotateLeft(offset, (byte) (offset & 0x1F));
+            offset = CryptoConstants.RotateLeft(offset, (byte)(offset & 0x1F));
             var encryptedOffset = ReadUInt32();
             offset ^= encryptedOffset;
             offset += FStart * 2;
@@ -168,7 +168,7 @@ namespace Mh.MapleLib.WzLib.Util
         {
             var outputString = "";
             for (var i = 0; i < stringToDecrypt.Length; i++)
-                outputString += (char) (stringToDecrypt[i] ^ ((char) ((WzKey[i * 2 + 1] << 8) + WzKey[i * 2])));
+                outputString += (char)(stringToDecrypt[i] ^ ((char)((WzKey[i * 2 + 1] << 8) + WzKey[i * 2])));
             return outputString;
         }
 
@@ -176,7 +176,7 @@ namespace Mh.MapleLib.WzLib.Util
         {
             var outputString = "";
             for (var i = 0; i < stringToDecrypt.Length; i++)
-                outputString += (char) (stringToDecrypt[i] ^ WzKey[i]);
+                outputString += (char)(stringToDecrypt[i] ^ WzKey[i]);
             return outputString;
         }
 

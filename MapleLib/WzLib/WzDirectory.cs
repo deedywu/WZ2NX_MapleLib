@@ -16,22 +16,22 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Mh.MapleLib.WzLib.Util;
+using Wz2Nx_MapleLib.MapleLib.WzLib.Util;
 
-namespace Mh.MapleLib.WzLib
+namespace Wz2Nx_MapleLib.MapleLib.WzLib
 {
     /// <summary>
     /// A directory in the wz file, which may contain sub directories or wz images
     /// </summary>
-    public class WzDirectory : WzObject
+    public sealed class WzDirectory : WzObject
     {
         #region Fields
 
-        private List<WzImage> _images = new List<WzImage>();
-        private List<WzDirectory> _subDirs = new List<WzDirectory>();
+        private List<WzImage> _images = new();
+        private List<WzDirectory> _subDirs = new();
         public WzBinaryReader Reader { get; private set; }
         private readonly uint _hash;
-        internal byte[] WzIv;
+        private readonly byte[] _wzIv;
         private readonly WzFile _wzFile;
 
         #endregion
@@ -56,11 +56,6 @@ namespace Mh.MapleLib.WzLib
         /// </summary>
         public override WzObject Parent { get; internal set; }
 
-        /// <summary>
-        /// The WzObjectType of the directory
-        /// </summary>
-        public virtual WzObjectType ObjectType => WzObjectType.Directory;
-
         public override WzFile WzFileParent => _wzFile;
 
         /// <summary>
@@ -78,16 +73,11 @@ namespace Mh.MapleLib.WzLib
             _subDirs = null;
         }
 
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
         #endregion
 
         #region Custom Members
-
-        /// <summary>
-        /// The wz images contained in the directory
-        /// </summary>
-        public IEnumerable<WzImage> WzImages => _images;
 
         /// <summary>
         /// The sub directories contained in the directory
@@ -134,7 +124,7 @@ namespace Mh.MapleLib.WzLib
             Reader = reader;
             Name = dirName;
             _hash = verHash;
-            WzIv = wzIv;
+            _wzIv = wzIv;
             _wzFile = wzFile;
         }
 
@@ -174,11 +164,11 @@ namespace Mh.MapleLib.WzLib
 
                 Reader.BaseStream.Position = rememberPos;
                 var fSize = Reader.ReadCompressedInt();
-                var checksum = Reader.ReadCompressedInt();
+                Reader.ReadCompressedInt();
                 var offset = Reader.ReadOffset();
                 if (type == 3)
                 {
-                    var subDir = new WzDirectory(Reader, fName, _hash, WzIv, _wzFile)
+                    var subDir = new WzDirectory(Reader, fName, _hash, _wzIv, _wzFile)
                         { Offset = offset, Parent = this };
                     _subDirs.Add(subDir);
                 }

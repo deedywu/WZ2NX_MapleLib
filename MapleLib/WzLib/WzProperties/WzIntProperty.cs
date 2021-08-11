@@ -1,4 +1,4 @@
-﻿﻿﻿﻿/*  MapleLib - A general-purpose MapleStory library
+﻿/*  MapleLib - A general-purpose MapleStory library
  * Copyright (C) 2009, 2010, 2015 Snow and haha01haha01
    
  * This program is free software: you can redistribute it and/or modify
@@ -14,26 +14,19 @@
  * You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-   using System.Collections.Generic;
-   using System.IO;
-using Mh.MapleLib.WzLib.Util;
-
-namespace Mh.MapleLib.WzLib.WzProperties
+namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 {
     /// <summary>
     /// A property that is stored in the wz file with a signed byte and possibly followed by an int. If the 
     /// signed byte is equal to -128, the value is is the int that follows, else the value is the byte.
     /// </summary>
-    public class WzIntProperty : WzImageProperty
+    public sealed class WzIntProperty : WzImageProperty
     {
         #region Fields
 
         #endregion
-        
 
         #region Inherited Members
-
-        public override object WzValue => Value;
 
         /// <summary>
         /// The parent of the object
@@ -48,7 +41,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Dispose the object
@@ -88,7 +81,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
 
         public override int GetInt() => Value;
 
-        public override short GetShort() => (short) Value;
+        public override short GetShort() => (short)Value;
 
         public override long GetLong() => Value;
 

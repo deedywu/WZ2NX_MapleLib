@@ -17,18 +17,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mh.MapleLib.WzLib.Util;
+using Wz2Nx_MapleLib.MapleLib.WzLib.Util;
 
-namespace Mh.MapleLib.WzLib
+namespace Wz2Nx_MapleLib.MapleLib.WzLib
 {
     /// <summary>
     /// A .img contained in a wz directory
     /// </summary>
-    public class WzImage : WzObject, IPropertyContainer
+    public sealed class WzImage : WzObject, IPropertyContainer
     {
         #region Fields
 
-        private List<WzImageProperty> _properties = new List<WzImageProperty>();
+        private List<WzImageProperty> _properties = new();
 
         public bool ParseEverything { get; private set; }
 
@@ -81,14 +81,14 @@ namespace Mh.MapleLib.WzLib
         /// <summary>
         /// The name of the image
         /// </summary>
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
         public override WzFile WzFileParent => Parent?.WzFileParent;
 
         /// <summary>
         /// Is the object parsed
         /// </summary>
-        public bool Parsed { get; private set; }
+        private bool Parsed { get; set; }
 
         /// <summary>
         /// Was the image changed
@@ -108,7 +108,7 @@ namespace Mh.MapleLib.WzLib
         /// <summary>
         /// The WzObjectType of the image
         /// </summary>
-        public virtual WzObjectType ObjectType
+        public WzObjectType ObjectType
         {
             get
             {

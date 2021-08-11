@@ -14,15 +14,14 @@
  * You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace Mh.MapleLib.WzLib.WzProperties
+namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 {
     /// <summary>
     /// A property that contains an x and a y value
     /// </summary>
-    public class WzVectorProperty : WzExtended
+    public sealed class WzVectorProperty : WzExtended
     {
         #region Fields
 
@@ -30,7 +29,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
 
         #region Inherited Members
 
-        public override object WzValue => new Vector2(X.Value, Y.Value);
+        public object WzValue => new Vector2(X.Value, Y.Value);
 
         /// <summary>
         /// The parent of the object
@@ -40,7 +39,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// The WzPropertyType of the property

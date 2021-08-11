@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-using System.Collections.Generic;
+   using System.Collections.Generic;
 
-namespace Mh.MapleLib.WzLib
+   namespace Wz2Nx_MapleLib.MapleLib.WzLib
 {
     public interface IPropertyContainer
     {

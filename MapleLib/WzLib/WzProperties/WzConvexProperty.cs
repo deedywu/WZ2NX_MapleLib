@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Mh.MapleLib.WzLib.WzProperties
+namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 {
     /// <summary>
     /// A property that contains several WzExtendedPropertys
@@ -27,7 +27,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
     {
         #region Fields
 
-        private List<WzImageProperty> _properties = new List<WzImageProperty>();
+        private List<WzImageProperty> _properties = new();
 
         #endregion
 
@@ -61,7 +61,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of this property
         /// </summary>
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets a wz property by it's name
@@ -130,10 +130,10 @@ namespace Mh.MapleLib.WzLib.WzProperties
         /// <param name="prop">The property to add</param>
         public void AddProperty(WzImageProperty prop)
         {
-            if (!(prop is WzExtended))
+            if (prop is not WzExtended extended)
                 throw new Exception("Property is not IExtended");
-            prop.Parent = this;
-            _properties.Add((WzExtended)prop);
+            extended.Parent = this;
+            _properties.Add(extended);
         }
 
         public void AddProperties(IEnumerable<WzImageProperty> properties)

@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-using System;
-using System.IO;
-using System.Security.Cryptography;
+   using System;
+   using System.IO;
+   using System.Security.Cryptography;
 
-namespace Mh.MapleLib.WzLib.Util
+   namespace Wz2Nx_MapleLib.MapleLib.WzLib.Util
 {
     public class WzMutableKey
     {

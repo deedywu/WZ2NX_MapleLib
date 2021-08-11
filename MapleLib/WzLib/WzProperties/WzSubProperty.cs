@@ -1,4 +1,4 @@
-﻿﻿﻿﻿/*  MapleLib - A general-purpose MapleStory library
+﻿/*  MapleLib - A general-purpose MapleStory library
  * Copyright (C) 2009, 2010, 2015 Snow and haha01haha01
    
  * This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Mh.MapleLib.WzLib.WzProperties
+namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 {
     /// <summary>
     /// A property that contains a set of properties
@@ -27,9 +27,10 @@ namespace Mh.MapleLib.WzLib.WzProperties
     {
         #region Fields
 
-        private List<WzImageProperty> _properties = new List<WzImageProperty>();
+        private List<WzImageProperty> _properties = new();
 
         #endregion
+
         public override int ChildCount()
         {
             return _properties.Count;
@@ -60,7 +61,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets a wz property by it's name
@@ -85,8 +86,8 @@ namespace Mh.MapleLib.WzLib.WzProperties
         /// <returns>the wz property with the specified name</returns>
         public override WzImageProperty GetFromPath(string path)
         {
-            var segments = path.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
-            if (segments[0] == "..") return ((WzImageProperty) Parent)[path.Substring(Name.IndexOf('/') + 1)];
+            var segments = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            if (segments[0] == "..") return ((WzImageProperty)Parent)[path.Substring(Name.IndexOf('/') + 1)];
 
             WzImageProperty ret = this;
             foreach (var t in segments)

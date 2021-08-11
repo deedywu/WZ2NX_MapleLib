@@ -125,19 +125,11 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Helpers\ErrorLogger.cs" />
-        <Compile Include="MapleLib\Helpers\ErrorLogger.cs" />
         <Compile Include="MapleLib\MapleCryptoLib\CryptoConstants.cs" />
         <Compile Include="MapleLib\MapleCryptoLib\MapleCryptoConstants.cs" />
-        <Compile Include="MapleLib\WzFileParseStatus.cs" />
-        <Compile Include="MapleLib\WzHeader.cs" />
         <Compile Include="MapleLib\WzLib\IPropertyContainer.cs" />
-        <Compile Include="MapleLib\WzLib\Util\GameUtil.cs" />
         <Compile Include="MapleLib\WzLib\Util\WzBinaryReader.cs" />
-        <Compile Include="MapleLib\WzLib\Util\WzBinaryWriter.cs" />
-        <Compile Include="MapleLib\WzLib\Util\WzKeyGenerator.cs" />
         <Compile Include="MapleLib\WzLib\Util\WzMutableKey.cs" />
-        <Compile Include="MapleLib\WzLib\Util\WzTool.cs" />
         <Compile Include="MapleLib\WzLib\WzDirectory.cs" />
         <Compile Include="MapleLib\WzLib\WzExtended.cs" />
         <Compile Include="MapleLib\WzLib\WzFile.cs" />
@@ -156,7 +148,6 @@
         <Compile Include="MapleLib\WzLib\WzProperties\WzNullProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzPngProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzShortProperty.cs" />
-        <Compile Include="MapleLib\WzLib\WzProperties\WzSoundProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzStringProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzSubProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzUolProperty.cs" />

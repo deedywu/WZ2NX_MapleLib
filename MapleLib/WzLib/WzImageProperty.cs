@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿/*  MapleLib - A general-purpose MapleStory library
+﻿/*  MapleLib - A general-purpose MapleStory library
  * Copyright (C) 2009, 2010, 2015 Snow and haha01haha01
    
  * This program is free software: you can redistribute it and/or modify
@@ -16,11 +16,10 @@
 
 using System;
 using System.Collections.Generic;
-using MapleLib.WzLib.WzProperties;
-using Mh.MapleLib.WzLib.Util;
-using Mh.MapleLib.WzLib.WzProperties;
+using Wz2Nx_MapleLib.MapleLib.WzLib.Util;
+using Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties;
 
-namespace Mh.MapleLib.WzLib
+namespace Wz2Nx_MapleLib.MapleLib.WzLib
 {
     /// <summary>
     /// An interface for wz img properties
@@ -83,34 +82,34 @@ namespace Mh.MapleLib.WzLib
                 switch (pType)
                 {
                     case 0:
-                        properties.Add(new WzNullProperty(name) {Parent = parent});
+                        properties.Add(new WzNullProperty(name) { Parent = parent });
                         break;
                     case 11:
                     case 2:
-                        properties.Add(new WzShortProperty(name, reader.ReadInt16()) {Parent = parent});
+                        properties.Add(new WzShortProperty(name, reader.ReadInt16()) { Parent = parent });
                         break;
                     case 3:
                     case 19:
-                        properties.Add(new WzIntProperty(name, reader.ReadCompressedInt()) {Parent = parent});
+                        properties.Add(new WzIntProperty(name, reader.ReadCompressedInt()) { Parent = parent });
                         break;
                     case 20:
-                        properties.Add(new WzLongProperty(name, reader.ReadLong()) {Parent = parent});
+                        properties.Add(new WzLongProperty(name, reader.ReadLong()) { Parent = parent });
                         break;
                     case 4:
                         var type = reader.ReadByte();
                         if (type == 0x80)
-                            properties.Add(new WzFloatProperty(name, reader.ReadSingle()) {Parent = parent});
+                            properties.Add(new WzFloatProperty(name, reader.ReadSingle()) { Parent = parent });
                         else if (type == 0)
-                            properties.Add(new WzFloatProperty(name, 0f) {Parent = parent});
+                            properties.Add(new WzFloatProperty(name, 0f) { Parent = parent });
                         break;
                     case 5:
-                        properties.Add(new WzDoubleProperty(name, reader.ReadDouble()) {Parent = parent});
+                        properties.Add(new WzDoubleProperty(name, reader.ReadDouble()) { Parent = parent });
                         break;
                     case 8:
-                        properties.Add(new WzStringProperty(name, reader.ReadStringBlock(offset)) {Parent = parent});
+                        properties.Add(new WzStringProperty(name, reader.ReadStringBlock(offset)) { Parent = parent });
                         break;
                     case 9:
-                        var eob = (int) (reader.ReadUInt32() + reader.BaseStream.Position);
+                        var eob = (int)(reader.ReadUInt32() + reader.BaseStream.Position);
                         WzImageProperty exProp = ParseExtendedProp(reader, offset, name, parent, parentImg);
                         properties.Add(exProp);
                         if (reader.BaseStream.Position != eob) reader.BaseStream.Position = eob;
@@ -148,12 +147,12 @@ namespace Mh.MapleLib.WzLib
             switch (iName)
             {
                 case "Property":
-                    var subProp = new WzSubProperty(name) {Parent = parent};
+                    var subProp = new WzSubProperty(name) { Parent = parent };
                     reader.BaseStream.Position += 2; // Reserved?
                     subProp.AddProperties(ParsePropertyList(offset, reader, subProp, imgParent));
                     return subProp;
                 case "Canvas":
-                    var canvasProp = new WzCanvasProperty(name) {Parent = parent};
+                    var canvasProp = new WzCanvasProperty(name) { Parent = parent };
                     reader.BaseStream.Position++;
                     if (reader.ReadByte() == 1)
                     {
@@ -162,33 +161,34 @@ namespace Mh.MapleLib.WzLib
                             ParsePropertyList(offset, reader, canvasProp, imgParent));
                     }
 
-                    canvasProp.PngProperty = new WzPngProperty(reader, imgParent.ParseEverything) {Parent = canvasProp};
+                    canvasProp.PngProperty = new WzPngProperty(reader, imgParent.ParseEverything)
+                        { Parent = canvasProp };
                     return canvasProp;
                 case "Shape2D#Vector2D":
-                    var vecProp = new WzVectorProperty(name) {Parent = parent};
-                    vecProp.X = new WzIntProperty("X", reader.ReadCompressedInt()) {Parent = vecProp};
-                    vecProp.Y = new WzIntProperty("Y", reader.ReadCompressedInt()) {Parent = vecProp};
+                    var vecProp = new WzVectorProperty(name) { Parent = parent };
+                    vecProp.X = new WzIntProperty("X", reader.ReadCompressedInt()) { Parent = vecProp };
+                    vecProp.Y = new WzIntProperty("Y", reader.ReadCompressedInt()) { Parent = vecProp };
                     return vecProp;
                 case "Shape2D#Convex2D":
-                    var convexProp = new WzConvexProperty(name) {Parent = parent};
+                    var convexProp = new WzConvexProperty(name) { Parent = parent };
                     var convexEntryCount = reader.ReadCompressedInt();
                     convexProp.WzProperties.Capacity = convexEntryCount;
                     for (var i = 0; i < convexEntryCount; i++)
                         convexProp.AddProperty(ParseExtendedProp(reader, offset, name, convexProp, imgParent));
                     return convexProp;
                 case "Sound_DX8":
-                    var soundProp = new WzSoundProperty(name, reader, imgParent.ParseEverything)
-                        {Parent = parent};
+                    var soundProp = new WzBinaryProperty(name, reader, imgParent.ParseEverything)
+                        { Parent = parent };
                     return soundProp;
                 case "UOL":
                     reader.BaseStream.Position++;
                     switch (reader.ReadByte())
                     {
                         case 0:
-                            return new WzUolProperty(name, reader.ReadString()) {Parent = parent};
+                            return new WzUolProperty(name, reader.ReadString()) { Parent = parent };
                         case 1:
                             return new WzUolProperty(name, reader.ReadStringAtOffset(offset + reader.ReadInt32()))
-                                {Parent = parent};
+                                { Parent = parent };
                     }
 
                     throw new Exception("Unsupported UOL type");

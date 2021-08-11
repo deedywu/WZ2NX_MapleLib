@@ -1,4 +1,4 @@
-﻿﻿﻿﻿/*  MapleLib - A general-purpose MapleStory library
+﻿/*  MapleLib - A general-purpose MapleStory library
  * Copyright (C) 2009, 2010, 2015 Snow and haha01haha01
    
  * This program is free software: you can redistribute it and/or modify
@@ -18,42 +18,37 @@
 
 #define UOLRES
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Mh.MapleLib.Helpers;
 
-namespace Mh.MapleLib.WzLib.WzProperties
+namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 {
     /// <summary>
     /// A property that's value is a string
     /// </summary>
-    public class WzUolProperty : WzExtended
+    public sealed class WzUolProperty : WzExtended
     {
         #region Fields
 
-        private WzObject _parent;
         private WzObject _linkVal;
 
         #endregion
-        
+
 
         #region Inherited Members
 
-        public override object WzValue => LinkValue;
+        public object WzValue => LinkValue;
 
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent
-        {
-            get => _parent;
-            internal set => _parent = value;
-        }
+        public override WzObject Parent { get; internal set; }
 
         /// <summary>
         /// The name of the property
         /// </summary>
-        public sealed override string Name { get; set; }
+        public override string Name { get; set; }
 
 #if UOLRES
         public override List<WzImageProperty> WzProperties =>
@@ -101,7 +96,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
             {
                 if (_linkVal != null) return _linkVal;
                 var paths = Value.Split('/');
-                _linkVal = _parent;
+                _linkVal = Parent;
                 foreach (var path in paths)
                 {
                     if (path == "..")
@@ -115,8 +110,7 @@ namespace Mh.MapleLib.WzLib.WzProperties
                         else if (_linkVal is WzDirectory directory) _linkVal = directory[path];
                         else
                         {
-                            ErrorLogger.Log(ErrorLevel.Critical,
-                                "UOL got nexon'd at property: " + this.FullPath);
+                            Console.WriteLine("UOL got nexon'd at property: " + FullPath);
                             return null;
                         }
                     }
