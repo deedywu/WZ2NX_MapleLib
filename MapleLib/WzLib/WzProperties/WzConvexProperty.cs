@@ -41,6 +41,8 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
             return new List<WzObject>(_properties);
         }
 
+        public override bool Contains(string name) => _properties.Any(p => p.Name.Equals(name));
+
         #region Inherited Members
 
         /// <summary>

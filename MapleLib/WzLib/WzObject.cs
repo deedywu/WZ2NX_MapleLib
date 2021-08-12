@@ -136,5 +136,10 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib
         {
             return null;
         }
+
+        public virtual bool Contains(string name)
+        {
+            return false;
+        }
     }
 }

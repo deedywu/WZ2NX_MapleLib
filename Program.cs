@@ -18,25 +18,21 @@ namespace Wz2Nx_MapleLib
         private static readonly byte[] Pkg4 = { 0x50, 0x4B, 0x47, 0x34 }; // PKG4
         private static readonly bool Is64Bit = IntPtr.Size == 8;
 
-        private static void EnsureMultiple(this Stream s, int multiple)
-        {
-            var skip = (int)(multiple - s.Position % multiple);
-            if (skip == multiple)
-                return;
-            s.Write(new byte[skip], 0, skip);
-        }
-
-        // todo write your to convert wz files name
-        private static readonly string[] Names =
-        {
-            "Sound", "String", "Etc"
-        };
+        private static bool _oldUol;
 
         public static void Main(string[] args)
         {
-            // todo write input wz path and output nx path,game version,Maple version here
-            foreach (var name in Names)
+            // todo write uol with string or position
+            _oldUol = false;
+            // todo write your to convert wz files name
+            string[] names =
             {
+                "Character", "Effect", "Etc", "Item", "Login", "Map", "Mob", "Morph",
+                "Npc", "Quest", "Reactor", "Skill", "Sound", "String", "UI"
+            };
+            foreach (var name in names)
+            {
+                // todo write input wz path and output nx path,game version,Maple version here
                 Run($"D:/workspace/study/ms/wz/079/{name}.wz",
                     $"D:/workspace/study/ms/wz/079/nx/{name}.nx",
                     WzMapleVersion.Ems, 79);
@@ -180,11 +176,19 @@ namespace Wz2Nx_MapleLib
             var nextChildId = (uint)(ds.GetNextNodeID() + nodeLevel.Count);
             foreach (var levelNode in nodeLevel)
             {
-                if (levelNode is WzUolProperty uolProperty)
-                    WriteUOL(uolProperty, ds, bw);
-                else
+                if (_oldUol)
+                {
                     WriteNode(levelNode, ds, bw, nextChildId);
-                nextChildId += (uint)levelNode.ChildCount();
+                    nextChildId += (uint)levelNode.ChildCount();
+                }
+                else
+                {
+                    if (levelNode is WzUolProperty uolProperty)
+                        WriteUOL(uolProperty, ds, bw);
+                    else
+                        WriteNode(levelNode, ds, bw, nextChildId);
+                    nextChildId += (uint)levelNode.ChildCount();
+                }
             }
 
             var @out = new List<WzObject>();
@@ -226,8 +230,8 @@ namespace Wz2Nx_MapleLib
                 type = 1; // int32 (4)
             else if (node is WzDoubleProperty or WzFloatProperty)
                 type = 2; // Double (0)
-            else if (node is WzStringProperty)
-                type = 3; // String (4)
+            else if (node is WzStringProperty || (_oldUol && node is WzUolProperty))
+                type = 3; // String(if oldUol and uolString) (4)
             else if (node is WzVectorProperty)
                 type = 4; // (0)
             else if (node is WzCanvasProperty)
@@ -238,7 +242,9 @@ namespace Wz2Nx_MapleLib
                 throw new InvalidOperationException("Unhandled WZ node type [1]");
 
             bw.Write(type);
-            if (node is WzIntProperty intProperty)
+            if (_oldUol && node is WzUolProperty uolProperty)
+                bw.Write(ds.AddString($"uol_{uolProperty.Value}"));
+            else if (node is WzIntProperty intProperty)
                 bw.Write((long)intProperty.Value);
             else if (node is WzShortProperty shortProperty)
                 bw.Write((long)shortProperty.Value);
@@ -282,9 +288,7 @@ namespace Wz2Nx_MapleLib
 
         private static void WriteString(string s, BinaryWriter bw)
         {
-            if (s.Any(char.IsControl))
-                Console.WriteLine("Warning; control character in string. Perhaps toggle /wzn?");
-            byte[] toWrite = Encoding.UTF8.GetBytes(s);
+            var toWrite = Encoding.UTF8.GetBytes(s);
             bw.Write((ushort)toWrite.Length);
             bw.Write(toWrite);
         }
@@ -344,6 +348,14 @@ namespace Wz2Nx_MapleLib
         [DllImport("lz4hc_64.dll",
             CallingConvention = CallingConvention.Cdecl, EntryPoint = "LZ4_compressBound")]
         private static extern int EMaxOutputLen64(int inputLen);
+
+        private static void EnsureMultiple(this Stream s, int multiple)
+        {
+            var skip = (int)(multiple - s.Position % multiple);
+            if (skip == multiple)
+                return;
+            s.Write(new byte[skip], 0, skip);
+        }
 
         private sealed class DumpState
         {

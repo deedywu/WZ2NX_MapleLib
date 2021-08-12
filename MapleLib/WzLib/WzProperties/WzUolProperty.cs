@@ -87,7 +87,7 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
         /// <summary>
         /// The value of the property
         /// </summary>
-        private string Value { get; set; }
+        public string Value { get; private set; }
 
 #if UOLRES
         private WzObject LinkValue
@@ -97,21 +97,40 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
                 if (_linkVal != null) return _linkVal;
                 var paths = Value.Split('/');
                 _linkVal = Parent;
-                foreach (var path in paths)
+                foreach (var path1 in paths)
                 {
-                    if (path == "..")
+                    if (path1 == "..")
                     {
                         _linkVal = _linkVal.Parent;
                     }
                     else
                     {
-                        if (_linkVal is WzImageProperty property) _linkVal = property[path];
-                        else if (_linkVal is WzImage image) _linkVal = image[path];
-                        else if (_linkVal is WzDirectory directory) _linkVal = directory[path];
+                        if (_linkVal is WzImageProperty property1) _linkVal = property1[path1];
+                        else if (_linkVal is WzImage image1) _linkVal = image1[path1];
+                        else if (_linkVal is WzDirectory directory1) _linkVal = directory1[path1];
                         else
-                        {
-                            Console.WriteLine("UOL got nexon'd at property: " + FullPath);
-                            return null;
+                        {   // cms wz has many errors,I had to fixed for only once  
+                            paths = ("../" + Value).Split('/');
+                            _linkVal = Parent;
+                            foreach (var path2 in paths)
+                            {
+                                if (path2 == "..")
+                                {
+                                    _linkVal = _linkVal.Parent;
+                                }
+                                else
+                                {
+                                    if (_linkVal is WzImageProperty property2) _linkVal = property2[path2];
+                                    else if (_linkVal is WzImage image2) _linkVal = image2[path2];
+                                    else if (_linkVal is WzDirectory directory2) _linkVal = directory2[path2];
+                                    else
+                                    {
+                                        Console.WriteLine("UOL got nexon'd at property: " + FullPath);
+                                    }
+                                }
+                            }
+
+                            break;
                         }
                     }
                 }

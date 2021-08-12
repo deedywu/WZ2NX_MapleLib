@@ -50,6 +50,8 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib
             return new List<WzObject>(_properties);
         }
 
+        public override bool Contains(string name) => ChildArray().Any(c => c.Name.Equals(name));
+
         #region Constructors\Destructors
 
         internal WzImage(string name, WzBinaryReader reader)

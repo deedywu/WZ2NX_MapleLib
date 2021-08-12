@@ -78,16 +78,6 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 
         public override double GetDouble() => Value;
 
-        public override int ChildCount()
-        {
-            return 0;
-        }
-
-        public override List<WzObject> ChildArray()
-        {
-            return null;
-        }
-
         public override int GetInt() => (int)Value;
 
         public override short GetShort() => (short)Value;

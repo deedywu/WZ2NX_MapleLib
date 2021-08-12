@@ -49,6 +49,9 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib
             return list;
         }
 
+        public override bool Contains(string name) =>
+            _images.Any(w => w.Name.Equals(name)) || _subDirs.Any(w => w.Name.Equals(name));
+
         #region Inherited Members
 
         /// <summary>  
