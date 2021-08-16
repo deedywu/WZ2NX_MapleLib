@@ -15,9 +15,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 using System;
-using System.Collections;
-using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using NAudio.Wave;
 using Wz2Nx_MapleLib.MapleLib.WzLib.Util;
 
@@ -26,19 +25,20 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
     /// <summary>
     /// A property that contains data for an MP3 or binary file
     /// </summary>
-    public sealed class WzBinaryProperty : WzExtended
+    public class WzSoundProperty : WzExtended
     {
         #region Fields
 
         private string _name;
         private byte[] _mp3Bytes;
+        private readonly int _lenMs;
 
-        private readonly byte[] _header;
+        private byte[] _header;
 
         //internal WzImage imgParent;
         private readonly WzBinaryReader _wzReader;
+        private bool _headerEncrypted = false;
         private readonly long _offs;
-        private readonly int _soundDataLen;
 
         private static readonly byte[] SoundHeader =
         {
@@ -49,6 +49,8 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
             0x01,
             0x81, 0x9F, 0x58, 0x05, 0x56, 0xC3, 0xCE, 0x11, 0xBF, 0x01, 0x00, 0xAA, 0x00, 0x55, 0x59, 0x5A
         };
+
+        private WaveFormat _wavFormat;
 
         #endregion
 
@@ -69,7 +71,7 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
         public override string Name
         {
             get => _name;
-            set => _name = value;
+            set { }
         }
 
         /// <summary>
@@ -90,12 +92,11 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
 
         #region Custom Members
 
-        /// <summary>
-        /// Length of the mp3 file in milliseconds
-        /// </summary>
-        public int Length { get; }
+        public int SoundLength { get; }
 
-        // BPS of the mp3 file 
+        /// <summary>
+        /// BPS of the mp3 file
+        /// </summary>
         //public byte BPS { get { return bps; } set { bps = value; } }
         /// <summary>
         /// Creates a WzSoundProperty with the specified name
@@ -103,15 +104,15 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
         /// <param name="name">The name of the property</param>
         /// <param name="reader">The wz reader</param>
         /// <param name="parseNow">Indicating whether to parse the property now</param>
-        public WzBinaryProperty(string name, WzBinaryReader reader, bool parseNow)
+        public WzSoundProperty(string name, WzBinaryReader reader, bool parseNow)
         {
             _name = name;
             _wzReader = reader;
             reader.BaseStream.Position++;
 
             //note - soundDataLen does NOT include the length of the header.
-            _soundDataLen = reader.ReadCompressedInt();
-            Length = reader.ReadCompressedInt();
+            SoundLength = reader.ReadCompressedInt();
+            _lenMs = reader.ReadCompressedInt();
 
             var headerOff = reader.BaseStream.Position;
             reader.BaseStream.Position += SoundHeader.Length; //skip GUIDs
@@ -124,17 +125,32 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
             //sound file offs
             _offs = reader.BaseStream.Position;
             if (parseNow)
-                _mp3Bytes = reader.ReadBytes(_soundDataLen);
+                _mp3Bytes = reader.ReadBytes(SoundLength);
             else
-                reader.BaseStream.Position += _soundDataLen;
+                reader.BaseStream.Position += SoundLength;
         }
 
-        private static T BytesToStruct<T>(IEnumerable data) where T : new()
+        private static T BytesToStruct<T>(byte[] data) where T : new()
         {
-            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
                 return Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject());
+            }
+            finally
+            {
+                handle.Free();
+            }
+        }
+
+        private static T BytesToStructConstructorless<T>(byte[] data)
+        {
+            GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                T obj = (T)FormatterServices.GetUninitializedObject(typeof(T));
+                Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject(), obj);
+                return obj;
             }
             finally
             {
@@ -154,7 +170,7 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
             if (Marshal.SizeOf<WaveFormat>() + wavFmt.ExtraSize != wavHeader.Length)
             {
                 //try decrypt
-                for (var i = 0; i < wavHeader.Length; i++)
+                for (int i = 0; i < wavHeader.Length; i++)
                 {
                     wavHeader[i] ^= _wzReader.WzKey[i];
                 }
@@ -164,7 +180,24 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
                 if (Marshal.SizeOf<WaveFormat>() + wavFmt.ExtraSize != wavHeader.Length)
                 {
                     Console.WriteLine("parse sound header failed");
+                    return;
                 }
+
+                _headerEncrypted = true;
+            }
+
+            // parse to mp3 header
+            if (wavFmt.Encoding == WaveFormatEncoding.MpegLayer3 && wavHeader.Length >= Marshal.SizeOf<Mp3WaveFormat>())
+            {
+                _wavFormat = BytesToStructConstructorless<Mp3WaveFormat>(wavHeader);
+            }
+            else if (wavFmt.Encoding == WaveFormatEncoding.Pcm)
+            {
+                _wavFormat = wavFmt;
+            }
+            else
+            {
+                Console.WriteLine($"Unknown wave encoding {wavFmt.Encoding.ToString()}");
             }
         }
 
@@ -176,29 +209,18 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
         {
             if (_mp3Bytes != null)
                 return _mp3Bytes;
-            else
-            {
-                if (_wzReader == null)
-                    return null;
+            if (_wzReader == null)
+                return null;
 
-                long currentPos = _wzReader.BaseStream.Position;
-                _wzReader.BaseStream.Position = _offs;
-                _mp3Bytes = _wzReader.ReadBytes(_soundDataLen);
-                _wzReader.BaseStream.Position = currentPos;
-                if (saveInMemory)
-                    return _mp3Bytes;
-                else
-                {
-                    byte[] result = _mp3Bytes;
-                    _mp3Bytes = null;
-                    return result;
-                }
-            }
-        }
-
-        public void SaveToFile(string file)
-        {
-            File.WriteAllBytes(file, GetBytes(false));
+            var currentPos = _wzReader.BaseStream.Position;
+            _wzReader.BaseStream.Position = _offs;
+            _mp3Bytes = _wzReader.ReadBytes(SoundLength);
+            _wzReader.BaseStream.Position = currentPos;
+            if (saveInMemory)
+                return _mp3Bytes;
+            var result = _mp3Bytes;
+            _mp3Bytes = null;
+            return result;
         }
 
         #endregion

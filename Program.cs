@@ -26,16 +26,15 @@ namespace Wz2Nx_MapleLib
             _oldUol = false;
             // todo write your to convert wz files name
             string[] names =
-            {
-                "Character", "Effect", "Etc", "Item", "Login", "Map", "Mob", "Morph",
-                "Npc", "Quest", "Reactor", "Skill", "Sound", "String", "UI"
+            { 
+            "Sound"
             };
             foreach (var name in names)
             {
                 // todo write input wz path and output nx path,game version,Maple version here
                 Run($"D:/workspace/study/ms/wz/079/{name}.wz",
                     $"D:/workspace/study/ms/wz/079/nx/{name}.nx",
-                    WzMapleVersion.Ems, 79);
+                    WzMapleVersion.Ems, 079);
             }
         }
 
@@ -236,7 +235,7 @@ namespace Wz2Nx_MapleLib
                 type = 4; // (0)
             else if (node is WzCanvasProperty)
                 type = 5; // (4)
-            else if (node is WzBinaryProperty)
+            else if (node is WzSoundProperty)
                 type = 6; // (4)
             else
                 throw new InvalidOperationException("Unhandled WZ node type [1]");
@@ -268,10 +267,10 @@ namespace Wz2Nx_MapleLib
                 bw.Write((ushort)wzcp.PngProperty.Height);
                 // wzcp.Dispose();
             }
-            else if (node is WzBinaryProperty wzmp)
+            else if (node is WzSoundProperty wzmp)
             {
                 bw.Write(ds.AddMP3(wzmp));
-                bw.Write((uint)wzmp.Length);
+                bw.Write((uint)wzmp.SoundLength);
                 // wzmp.Dispose();
             }
 
@@ -310,7 +309,7 @@ namespace Wz2Nx_MapleLib
             }
         }
 
-        private static void WriteMP3(WzBinaryProperty node, BinaryWriter bw)
+        private static void WriteMP3(WzSoundProperty node, BinaryWriter bw)
         {
             var m = node.GetBytes();
             bw.Write(m);
@@ -363,7 +362,7 @@ namespace Wz2Nx_MapleLib
             {
                 Canvases = new List<WzCanvasProperty>();
                 Strings = new Dictionary<string, uint>(StringComparer.Ordinal) { { "", 0 } };
-                MP3s = new List<WzBinaryProperty>();
+                MP3s = new List<WzSoundProperty>();
                 UOLs = new Dictionary<WzUolProperty, Action<BinaryWriter, byte[]>>();
                 Nodes = new Dictionary<WzObject, uint>();
             }
@@ -372,7 +371,7 @@ namespace Wz2Nx_MapleLib
 
             public Dictionary<string, uint> Strings { get; private set; }
 
-            public List<WzBinaryProperty> MP3s { get; private set; }
+            public List<WzSoundProperty> MP3s { get; private set; }
 
             public Dictionary<WzUolProperty, Action<BinaryWriter, byte[]>> UOLs { get; private set; }
 
@@ -385,7 +384,7 @@ namespace Wz2Nx_MapleLib
                 return ret;
             }
 
-            public uint AddMP3(WzBinaryProperty node)
+            public uint AddMP3(WzSoundProperty node)
             {
                 uint ret = (uint)MP3s.Count;
                 MP3s.Add(node);

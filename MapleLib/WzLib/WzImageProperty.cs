@@ -177,7 +177,7 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib
                         convexProp.AddProperty(ParseExtendedProp(reader, offset, name, convexProp, imgParent));
                     return convexProp;
                 case "Sound_DX8":
-                    var soundProp = new WzBinaryProperty(name, reader, imgParent.ParseEverything)
+                    var soundProp = new WzSoundProperty(name, reader, imgParent.ParseEverything)
                         { Parent = parent };
                     return soundProp;
                 case "UOL":

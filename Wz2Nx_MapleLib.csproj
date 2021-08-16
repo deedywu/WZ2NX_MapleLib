@@ -138,7 +138,6 @@
         <Compile Include="MapleLib\WzLib\WzMapleVersion.cs" />
         <Compile Include="MapleLib\WzLib\WzObject.cs" />
         <Compile Include="MapleLib\WzLib\WzObjectType.cs" />
-        <Compile Include="MapleLib\WzLib\WzProperties\WzBinaryProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzCanvasProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzConvexProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzDoubleProperty.cs" />
@@ -148,6 +147,7 @@
         <Compile Include="MapleLib\WzLib\WzProperties\WzNullProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzPngProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzShortProperty.cs" />
+        <Compile Include="MapleLib\WzLib\WzProperties\WzSoundProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzStringProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzSubProperty.cs" />
         <Compile Include="MapleLib\WzLib\WzProperties\WzUolProperty.cs" />
