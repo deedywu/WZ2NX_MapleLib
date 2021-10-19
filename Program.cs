@@ -26,15 +26,21 @@ namespace Wz2Nx_MapleLib
             _oldUol = false;
             // todo write your to convert wz files name
             string[] names =
-            { 
-            "Sound"
+            {
+                "Item",
+
+
+                // "Character"
+                // "Effect","Etc",
+                //  "Map","Mob","Morph","Npc","Quest",
+                // "Reactor","Skill","Sound","String" 
             };
             foreach (var name in names)
             {
                 // todo write input wz path and output nx path,game version,Maple version here
-                Run($"D:/workspace/study/ms/wz/079/{name}.wz",
-                    $"D:/workspace/study/ms/wz/079/nx/{name}.nx",
-                    WzMapleVersion.Ems, 079);
+                Run($"D:/deedy/079/{name}.wz",
+                    $"D:/deedy/079/mx/{name}.nx",
+                    WzMapleVersion.Ems, 79);
             }
         }
 
@@ -265,13 +271,13 @@ namespace Wz2Nx_MapleLib
                 bw.Write(ds.AddCanvas(wzcp));
                 bw.Write((ushort)wzcp.PngProperty.Width);
                 bw.Write((ushort)wzcp.PngProperty.Height);
-                // wzcp.Dispose();
+                wzcp.Dispose();
             }
             else if (node is WzSoundProperty wzmp)
             {
                 bw.Write(ds.AddMP3(wzmp));
                 bw.Write((uint)wzmp.SoundLength);
-                // wzmp.Dispose();
+                wzmp.Dispose();
             }
 
             switch (type)
@@ -294,7 +300,16 @@ namespace Wz2Nx_MapleLib
 
         private static void WriteBitmap(WzCanvasProperty node, BinaryWriter bw)
         {
-            var b = node.PngProperty.GetBitmap();
+            Bitmap b;
+            try
+            {
+                b = node.PngProperty.GetBitmap();
+            }
+            catch (Exception e)
+            {
+                b = null;
+            }
+
             if (b == null)
             {
                 bw.Write((uint)0);

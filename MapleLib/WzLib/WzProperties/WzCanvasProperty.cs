@@ -135,13 +135,13 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
         /// </summary>
         public override void Dispose()
         {
-            Name = null;
+            // Name = null;
             PngProperty.Dispose();
-            PngProperty = null;
-            foreach (var prop in _properties) prop.Dispose();
+            // PngProperty = null;
+            // foreach (var prop in _properties) prop.Dispose();
 
-            _properties.Clear();
-            _properties = null;
+            // _properties.Clear();
+            // _properties = null;
         }
 
         #endregion

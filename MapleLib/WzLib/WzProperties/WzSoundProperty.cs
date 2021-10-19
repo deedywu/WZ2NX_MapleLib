@@ -84,7 +84,7 @@ namespace Wz2Nx_MapleLib.MapleLib.WzLib.WzProperties
         /// </summary>
         public override void Dispose()
         {
-            _name = null;
+            // _name = null;
             _mp3Bytes = null;
         }
 
