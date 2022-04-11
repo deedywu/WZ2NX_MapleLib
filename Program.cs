@@ -15,7 +15,7 @@ namespace Wz2Nx_MapleLib
     // override from WZ2NX (angles)
     internal static class Program
     {
-        private static readonly byte[] Pkg4 = { 0x50, 0x4B, 0x47, 0x34 }; // PKG4
+        private static readonly byte[] Pkg4 = { 0x50, 0x4B, 0x47, 0x35 }; // PKG5
         private static readonly bool Is64Bit = IntPtr.Size == 8;
 
         private static bool _oldUol;
@@ -26,21 +26,19 @@ namespace Wz2Nx_MapleLib
             _oldUol = false;
             // todo write your to convert wz files name
             string[] names =
-            {
-                "Item",
-
-
-                // "Character"
-                // "Effect","Etc",
-                //  "Map","Mob","Morph","Npc","Quest",
-                // "Reactor","Skill","Sound","String" 
+            { 
+                // "Effect", "Etc", "Item",
+                // "Map", "Mob", "Morph", "Npc", "Quest",
+                // "Reactor", "Skill", "Sound", "String",
+                // "UI"
+                "Our"
             };
             foreach (var name in names)
             {
                 // todo write input wz path and output nx path,game version,Maple version here
-                Run($"D:/deedy/079/{name}.wz",
-                    $"D:/deedy/079/mx/{name}.nx",
-                    WzMapleVersion.Ems, 79);
+                Run($"D:/deedy/{name}.wz",
+                    $"D:/deedy/new/{name}.wz",
+                    WzMapleVersion.Bms, 171);
             }
         }
 
