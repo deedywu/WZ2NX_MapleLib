@@ -24,7 +24,7 @@ namespace Wz2Nx_MapleLib
         {
             // todo write uol with string or position
             _oldUol = false;
-            // todo write your to convert wz files name
+            // todo write your to convert wz files name·
             string[] names =
             { 
                 // "Effect", "Etc", "Item",
